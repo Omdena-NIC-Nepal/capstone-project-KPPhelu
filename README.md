@@ -5,11 +5,12 @@ Extreme Weather Event Detection and Prediction ML Project-Nepal App /
 |-- app.py                  # Main Streamlit app
 | 
 |-- data/
-|   |-- shape file          # Shape file of Nepal District boundary
-|   |-- climate data        # Daily climate data of Nepal
+|   |-- Shape_Data_district/          # Shape file of Nepal District boundary
+|   |-- dailyclimate.csv        # Daily climate data of Nepal
 |
 |-- utils/
-|   |-- data_utils.py       # Data Laoding and preprocessing
+|   |-- data_utils.py       # Data Laoding
+|   |-- preprocessing.py    # Data pre-processing
 |   |-- visualizations.py   # data visualization
 |   |-- models.py           # model loading, training and evaluation
 |   |-- prediction.py       # Prediction
@@ -17,7 +18,7 @@ Extreme Weather Event Detection and Prediction ML Project-Nepal App /
 |-- pages/
 |   |-- data_exploration.py
 |   |-- model_training.py
-|   |-- predition_page.py 
+|   |-- prediction_pg.py 
 |   |-- about.py
 |
 |-- requirements.txt        # Project dependencies
