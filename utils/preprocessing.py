@@ -6,6 +6,7 @@ import pandas as pd
 class DataPreprocessor:
     def __init__(self, climate_df: pd.DataFrame):
         self.df = climate_df.copy()
+        # self.preprocess()
 
     def preprocess(self):
         """

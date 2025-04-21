@@ -6,6 +6,7 @@ import os
 utils_dir = os.path.join(Path(__file__).parent, "utils")
 sys.path.append(utils_dir)
 from data_utils import DataLoader
+from preprocessing import DataPreprocessor
 
 pages_dir = os.path.join(Path(__file__).parent, "pages_streamlit")
 sys.path.append(pages_dir)
@@ -23,6 +24,10 @@ st.set_page_config(
 st.header("Extreme Weather Event Detection and Prediction - Nepal")
 # st.markdown("**Welcome...**")
 
+## load data
+loader = DataLoader()
+preprocessor = DataPreprocessor(loader.climate_df)
+
 
 # Give the sidebar for the app navigation
 st.sidebar.title("Navigation")
@@ -32,7 +37,7 @@ page = st.sidebar.radio("Go to:", ["Data Exploration", "Model Training", "Predic
 
 # Display the selected page
 if page == "Data Exploration":    
-    data_exploration_pg.show()
+    data_exploration_pg.show(gdf = loader.district_shp, df = preprocessor.df)
 elif page == "Model Training":
     model_training_pg.show()
 elif page == "Prediction":
