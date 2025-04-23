@@ -10,7 +10,7 @@ from preprocessing import DataPreprocessor
 
 pages_dir = os.path.join(Path(__file__).parent, "pages_streamlit")
 sys.path.append(pages_dir)
-from pages_streamlit import data_exploration_pg, model_training_pg, prediction_pg, about_pg
+from pages_streamlit import home_pg, data_exploration_pg, model_training_pg, prediction_pg, about_pg
 
 # Set the page configuration
 st.set_page_config(
@@ -39,11 +39,13 @@ preprocessor.preprocess()
 # Give the sidebar for the app navigation
 st.sidebar.title("Navigation")
 st.sidebar.info("Navigate through the pages.")
-page = st.sidebar.radio("Go to:", ["Data Exploration", "Model Training", "Prediction", "About"])
+page = st.sidebar.radio("Go to:", ["Home","Data Exploration", "Model Training", "Prediction", "About"])
 
 
 # Display the selected page
-if page == "Data Exploration":    
+if page == "Home":  
+    home_pg.show()
+elif page == "Data Exploration":    
     data_exploration_pg.show(gdf = preprocessor.gdf, df = preprocessor.df)
 elif page == "Model Training":
     model_training_pg.show()

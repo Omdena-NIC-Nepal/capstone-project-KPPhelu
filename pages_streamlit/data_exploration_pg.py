@@ -10,6 +10,7 @@ from data_utils import DataLoader
 
 from data_utils import DataLoader
 from preprocessing import DataPreprocessor
+from visualizations import plot_histogram, plot_pairplot, plot_correlation_heatmap 
 from visualizations import plot_district_map, choropleth_map, plot_time_series, plot_boxplot_monthly
 
 columns_required = {'Precip': {'aggregation': 'mean', 'unit': 'mm/day'},
@@ -61,6 +62,21 @@ def show(gdf, df):
         # basic statistics
         st.subheader("Statistical Summary")
         st.write(df.describe().T)
+
+        st.subheader("Distribution of climate variables.")
+        fig = plot_histogram(aggregated_data_per_month(df), (10,8), 4, 3)
+        st.pyplot(fig)
+
+        st.subheader("Pair Plot of some climate variables.")
+        with st.expander("Pair Plot", expanded=False):
+            fig = plot_pairplot(aggregated_data_per_month(df)[['Precip','Pressure','Humidity_2m','Temp_2m','WindSpeed_10m']])
+            st.pyplot(fig)
+
+        st.subheader("Correlation Coefficient Heatmap of climate variables.")
+        with st.expander("Correlation Heatmap", expanded=False):
+            fig = plot_correlation_heatmap(aggregated_data_per_month(df), (8,8))
+            st.pyplot(fig)
+
 
     with tab2:
         ## map of nepal with district boundary
