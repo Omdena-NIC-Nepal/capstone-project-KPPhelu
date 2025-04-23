@@ -21,7 +21,7 @@ class DataLoader:
     This class handle data loading for the project
     """
     def __init__(self, shape_file = r'data/Shape_Data_district/district.shp',
-                 climate_file = r'data/dailyclimate.csv'):
+                 climate_file = r'data/dailyclimate.zip'):
         self.shape_file = shape_file
         self.climate_file = climate_file
 
@@ -29,8 +29,8 @@ class DataLoader:
         self.district_shp = None
         self.climate_df = None
         
-        self.load_shape_file()
-        self.load_climate_data()
+        # self.load_shape_file()
+        # self.load_climate_data()
 
     def file_exists(self, file_name) -> bool:
         """
@@ -48,9 +48,9 @@ class DataLoader:
         if self.file_exists(self.shape_file):
             self.district_shp = load_cached_shape_file(self.shape_file)
             # self.district_shp = gpd.read_file(self.shape_file)
-            st.success(f'Shape data for Districts of Nepal loaded successfully.') # show the messages in the Streamlit app UI
+            print(f'Shape data for Districts of Nepal loaded successfully.') # show the messages in the Streamlit app UI
         else:
-            st.error(f'Shape file "{self.shape_file}" does not exits.')
+            print(f'Shape file "{self.shape_file}" does not exits.')
 
     def load_climate_data(self):
         """
@@ -59,7 +59,7 @@ class DataLoader:
         if self.file_exists(self.climate_file):
             self.climate_df = load_cached_climate_data(self.climate_file)
             # self.climate_df = pd.read_csv(self.climate_file)
-            st.success(f'Climate data from 93 weather stations spanning 62 districts in Nepal loaded successfully.')
+            print(f'Climate data from 93 weather stations spanning 62 districts in Nepal loaded successfully.')
         else:
-            st.error(f'Climate data file "{self.climate_file}" does not exits.')
+            print(f'Climate data file "{self.climate_file}" does not exits.')
     

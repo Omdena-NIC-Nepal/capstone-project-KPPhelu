@@ -26,7 +26,14 @@ st.header("Extreme Weather Event Detection and Prediction - Nepal")
 
 ## load data
 loader = DataLoader()
-preprocessor = DataPreprocessor(loader.climate_df)
+try:
+    loader.load_shape_file()
+    loader.load_climate_data()
+    st.success("Files loaded successfully.")
+except FileNotFoundError as e:
+    st.error(str(e))
+preprocessor = DataPreprocessor(loader.climate_df, loader.district_shp)
+preprocessor.preprocess()
 
 
 # Give the sidebar for the app navigation
@@ -37,7 +44,7 @@ page = st.sidebar.radio("Go to:", ["Data Exploration", "Model Training", "Predic
 
 # Display the selected page
 if page == "Data Exploration":    
-    data_exploration_pg.show(gdf = loader.district_shp, df = preprocessor.df)
+    data_exploration_pg.show(gdf = preprocessor.gdf, df = preprocessor.df)
 elif page == "Model Training":
     model_training_pg.show()
 elif page == "Prediction":
