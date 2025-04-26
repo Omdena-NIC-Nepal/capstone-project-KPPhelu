@@ -3,16 +3,20 @@ This file pre-process data
 """
 import pandas as pd
 import geopandas as gpd
+import streamlit as st
 
 class DataPreprocessor:
-    def __init__(self, climate_df: pd.DataFrame, district_gdf):
+    def __init__(self, climate_df: pd.DataFrame, district_gdf: gpd.GeoDataFrame):
         self.df = climate_df.copy()
         self.gdf = district_gdf.copy()
         # self.preprocess()
 
     def preprocess(self):
-        self.preprocess_df()
-        self.preprocess_gdf()
+        with st.spinner("Preprocessing climate data..."):
+            self.preprocess_df()
+        with st.spinner("Preprocessing district boundaries..."):
+            self.preprocess_gdf()
+        return self.df, self.gdf
 
     def preprocess_df(self):
         """
@@ -45,7 +49,7 @@ class DataPreprocessor:
         Convert Date column into datetime format if it exists
         """
         if date_column in self.df.columns:
-            self.df[date_column] = pd.to_datetime(self.df[date_column])
+            self.df[date_column] = pd.to_datetime(self.df[date_column], errors="coerce")
             print(f"'{date_column}' column converted to datetime.")
 
     def drop_missing(self, key_columns = ['Date', 'District']):
@@ -105,6 +109,3 @@ class DataPreprocessor:
         self.gdf['DISTRICT'] = self.gdf['DISTRICT'].replace(name_map)
         print(f'Renamed districts: {name_map}')
 
-
-
-        

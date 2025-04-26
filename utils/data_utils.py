@@ -8,12 +8,14 @@ import geopandas as gpd
 from pathlib import Path
 import streamlit as st
 
-@st.cache_data
+@st.cache_data(show_spinner=False, ttl=3600)
 def load_cached_shape_file(shape_file):
+    st.info("Loading shapefile from cache...")
     return gpd.read_file(shape_file)
 
-@st.cache_data
+@st.cache_data(show_spinner="Loading climate data...", ttl=3600)
 def load_cached_climate_data(climate_file):
+    st.info("Loading climate CSV from cache...")
     return pd.read_csv(climate_file)
 
 class DataLoader:

@@ -13,6 +13,7 @@ from preprocessing import DataPreprocessor
 from visualizations import plot_histogram, plot_pairplot, plot_correlation_heatmap 
 from visualizations import plot_district_map, choropleth_map, plot_time_series, plot_boxplot_monthly
 
+
 columns_required = {'Precip': {'aggregation': 'mean', 'unit': 'mm/day'},
                 'Pressure': {'aggregation': 'mean', 'unit': 'kPa'},
                 'Humidity_2m': {'aggregation': 'mean', 'unit': 'g/kg'},
@@ -46,13 +47,21 @@ def show(gdf, df):
     with tab1:
         st.subheader("Climate Data Summary")
         # Show the raw data
-        st.markdown("### Dataset Snapshot")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("Total Observations", df.shape[0])
+            st.metric("Variables", df.shape[1])
+        with col2:
+            st.metric("Date Range", 
+                        f"{df['Date'].min().date()} to {df['Date'].max().date()}")
+            st.metric("Districts Covered", len(df['District'].unique()))
+
+        # st.markdown("### Dataset Snapshot")
         st.dataframe(df.head())
         st.dataframe(df.tail())
 
+
         st.markdown("### Basic Info")
-        st.write(f"**Total Rows:** {df.shape[0]}")
-        st.write(f"**Total Columns:** {df.shape[1]}")
         st.write("**Column Names:**", list(df.columns))
 
         st.markdown("### Missing Values")
@@ -63,18 +72,21 @@ def show(gdf, df):
         st.subheader("Statistical Summary")
         st.write(df.describe().T)
 
+        # Get aggregated data per month
+        df_aggregate_monthwise = aggregated_data_per_month(df)
+
         st.subheader("Distribution of climate variables.")
-        fig = plot_histogram(aggregated_data_per_month(df), (10,8), 4, 3)
+        fig = plot_histogram(df_aggregate_monthwise, (10,8), 4, 3)
         st.pyplot(fig)
 
         st.subheader("Pair Plot of some climate variables.")
         with st.expander("Pair Plot", expanded=False):
-            fig = plot_pairplot(aggregated_data_per_month(df)[['Precip','Pressure','Humidity_2m','Temp_2m','WindSpeed_10m']])
+            fig = plot_pairplot(df_aggregate_monthwise[['Precip','Pressure','Humidity_2m','Temp_2m','WindSpeed_10m']])
             st.pyplot(fig)
 
         st.subheader("Correlation Coefficient Heatmap of climate variables.")
         with st.expander("Correlation Heatmap", expanded=False):
-            fig = plot_correlation_heatmap(aggregated_data_per_month(df), (8,8))
+            fig = plot_correlation_heatmap(df_aggregate_monthwise, (8,8))
             st.pyplot(fig)
 
 
@@ -100,8 +112,8 @@ def show(gdf, df):
             if plot_checkbox:
                 print(key)            
                 title = f'Aggregated ({value["aggregation"]}) of "{key} ({value['unit']})" over 1981-Jan-01 to 2019-Dec-31.'
-
-                fig = get_choropleth_plot(df_average_districtwise, key,title)
+                with st.spinner("Preprocessing title..."):                
+                    fig = get_choropleth_plot(df_average_districtwise, key,title)
                 st.success(f'{title} GENERATED')
                 st.pyplot(fig)
 
@@ -167,7 +179,7 @@ def aggregated_data_per_month(df):
     """
     This method returns monthly aggregated data from daily data, to reduce sample points
     """
-    df['Date'] = pd.to_datetime(df['Date'])  # Ensure datetime
+    # df['Date'] = pd.to_datetime(df['Date'])  # Ensure datetime
     df.set_index('Date', inplace=True)       # Set Date as index
     # Resample monthly for each district
     df_monthly = (
