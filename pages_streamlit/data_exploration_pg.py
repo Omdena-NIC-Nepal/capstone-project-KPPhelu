@@ -15,15 +15,15 @@ from visualizations import plot_district_map, choropleth_map, plot_time_series, 
 
 
 columns_required = {'Precip': {'aggregation': 'mean', 'unit': 'mm/day'},
-                'Pressure': {'aggregation': 'mean', 'unit': 'kPa'},
+                # 'Pressure': {'aggregation': 'mean', 'unit': 'kPa'},
                 'Humidity_2m': {'aggregation': 'mean', 'unit': 'g/kg'},
-                'RH_2m': {'aggregation': 'mean', 'unit': '%'},
+                # 'RH_2m': {'aggregation': 'mean', 'unit': '%'},
                 'Temp_2m': {'aggregation': 'mean', 'unit': '°C'},
                 'MaxTemp_2m': {'aggregation': 'max', 'unit': '°C'},
                 'MinTemp_2m': {'aggregation': 'min', 'unit': '°C'},
-                'WindSpeed_10m': {'aggregation': 'mean', 'unit': 'm/s'},
-                'MaxWindSpeed_10m': {'aggregation': 'max', 'unit': 'm/s'},
-                'MinWindSpeed_10m': {'aggregation': 'min', 'unit': 'm/s'}
+                # 'WindSpeed_10m': {'aggregation': 'mean', 'unit': 'm/s'},
+                # 'MaxWindSpeed_10m': {'aggregation': 'max', 'unit': 'm/s'},
+                # 'MinWindSpeed_10m': {'aggregation': 'min', 'unit': 'm/s'}
                 }
 agg_dict = {}  ## dictionary representing aggregation function for each columns
 for key,value in columns_required.items():
@@ -70,18 +70,19 @@ def show(gdf, df):
 
         # basic statistics
         st.subheader("Statistical Summary")
-        st.write(df.describe().T)
+        st.write(df.describe())
 
         # Get aggregated data per month
         df_aggregate_monthwise = aggregated_data_per_month(df)
 
         st.subheader("Distribution of climate variables.")
-        fig = plot_histogram(df_aggregate_monthwise, (10,8), 4, 3)
+        fig = plot_histogram(df_aggregate_monthwise, (10,5), 2, 3)
         st.pyplot(fig)
 
         st.subheader("Pair Plot of some climate variables.")
         with st.expander("Pair Plot", expanded=False):
-            fig = plot_pairplot(df_aggregate_monthwise[['Precip','Pressure','Humidity_2m','Temp_2m','WindSpeed_10m']])
+            # fig = plot_pairplot(df_aggregate_monthwise[['Precip','Pressure','Humidity_2m','Temp_2m','WindSpeed_10m']])
+            fig = plot_pairplot(df_aggregate_monthwise[[key for key in columns_required.keys()]])
             st.pyplot(fig)
 
         st.subheader("Correlation Coefficient Heatmap of climate variables.")

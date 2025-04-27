@@ -8,7 +8,6 @@ def show(gdf, df, thresholds):
     st.title("Data Exploration with Climate events")
     st.markdown(f""" Categorical "EventType" is added based on Extreme weather event. 
                \n Following are Extreme weather event "EventType" labels based on raw climate data:                                
-- HighWind if WindSpeed_10m > {thresholds['WindSpeed_10m']} (m/s)
 - Coldwave if MinTemp_2m < {thresholds['MinTemp_2m']} (°C)
 - HighTemp if Temp_2m > {thresholds['Temp_2m']} (°C)
 - Heatwave if MaxTemp_2m > {thresholds['MaxTemp_2m']} (°C)
@@ -33,7 +32,7 @@ def show(gdf, df, thresholds):
         st.metric("Count of 'Heatwave' EventType", len(df[df['EventType']=='Heatwave']))  
         st.metric("Count of 'HighTemp' EventType", len(df[df['EventType']=='HighTemp']))  
         st.metric("Count of 'ColdWave' EventType", len(df[df['EventType']=='ColdWave']))  
-        st.metric("Count of 'HighWind' EventType", len(df[df['EventType']=='HighWind']))  
+        # st.metric("Count of 'HighWind' EventType", len(df[df['EventType']=='HighWind']))  
 
     st.subheader("Climate ExtremeEvent Event Type Distribution")
     fig = plot_event_type_distribution(df)

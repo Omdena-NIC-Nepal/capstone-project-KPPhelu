@@ -23,7 +23,7 @@ class DataLoader:
     This class handle data loading for the project
     """
     def __init__(self, shape_file = r'data/Shape_Data_district/district.shp',
-                 climate_file = r'data/dailyclimate.zip'):
+                 climate_file = r'data/dailyclimate-2.csv'):
         self.shape_file = shape_file
         self.climate_file = climate_file
 
@@ -65,3 +65,61 @@ class DataLoader:
         else:
             print(f'Climate data file "{self.climate_file}" does not exits.')
     
+class PrepareData:
+    """
+    This class handles data preparation (Features and target variable) for three types of predictions.
+    The 3 types of predictions are:
+    1. regression: predicting climate variables (Precip, Humidity_2m, Temp_2m, MaxTemp_2m, MinTemp_2m)
+    2. multi-class classifier: predicting the type of event (EventType)
+    3. binary classifier: predicting whether an extreme event occurs (ExtremeEvent)
+    """
+    def __init__(self, df):
+        """_summary_
+        Initialize class
+        Args:
+            df : DataFrame input for Data Preparation. This is dataframe after feature engineering columns are added
+        """
+        self.df = df.copy()
+        self.input_columns = df.columns
+
+    def prepare_data(self, target_cols, exclude_cols):
+        """
+        Prepare data from given target columns and exclusion columns
+        """
+        feature_cols = [col for col in self.input_columns if col not in target_cols + exclude_cols]
+        
+        X = self.df[feature_cols]
+        y = self.df[target_cols]
+
+        # Reset index after splitting
+        X.reset_index(drop=True, inplace=True)
+        y.reset_index(drop=True, inplace=True)
+
+        return X, y
+    
+    def prepare_data_regression(self):
+        """
+        prepare data for regression
+        """
+        target_cols = ['Precip', 'Humidity_2m', 'Temp_2m', 'MaxTemp_2m', 'MinTemp_2m']
+        exclude_cols  = ['Date', 'ExtremeEvent', 'eventtype_encoded', 'temp_precip_combined', 'temp_humidity_combined']        
+        
+        return self.prepare_data(target_cols, exclude_cols)
+
+    def prepare_data_multi_classifier(self):
+        """
+        prepare data for multi-class classifier
+        """
+        target_cols = ['eventtype_encoded']    
+        exclude_cols = ['Date', 'ExtremeEvent']
+
+        return self.prepare_data(target_cols, exclude_cols)
+
+    def prepare_data_binary_classifier(self):
+        """
+        prepare data for binary classifier
+        """
+        target_cols = ['ExtremeEvent']    
+        exclude_cols = ['Date', 'eventtype_encoded']
+
+        return self.prepare_data(target_cols, exclude_cols)

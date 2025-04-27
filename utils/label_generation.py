@@ -22,7 +22,7 @@ class LabelGenerator:
             self.thresholds = {
                 'Precip': 50,          # mm (heavy rainfall threshold)
                 'Temp_2m': 35,         # °C (high temperature threshold)
-                'WindSpeed_10m': 15,    # m/s (high wind speed threshold)
+                # 'WindSpeed_10m': 15,    # m/s (high wind speed threshold)
                 'MaxTemp_2m': 38,         # °C (heatwave threshold)
                 'MinTemp_2m': -3           # °C (cold event threshold)
             }
@@ -41,7 +41,7 @@ class LabelGenerator:
         EventType is based on priority-based overwrite. This means later conditions overwrite earlier ones
         """
         # Create condition masks
-        high_wind = self.df['WindSpeed_10m'] > self.thresholds['WindSpeed_10m']
+        # high_wind = self.df['WindSpeed_10m'] > self.thresholds['WindSpeed_10m']
         coldwave = self.df['MinTemp_2m'] < self.thresholds['MinTemp_2m']
         high_temp = self.df['Temp_2m'] > self.thresholds['Temp_2m']
         heatwave = self.df['MaxTemp_2m'] > self.thresholds['MaxTemp_2m']        
@@ -49,7 +49,7 @@ class LabelGenerator:
 
         # Assign event type (priority-based, overwrite as needed, later conditions overwrite earlier ones)
         self.df['EventType'] = 'Normal'
-        self.df.loc[high_wind, 'EventType'] = 'HighWind'
+        # self.df.loc[high_wind, 'EventType'] = 'HighWind'
         self.df.loc[coldwave, 'EventType'] = 'ColdWave'
         self.df.loc[high_temp, 'EventType'] = 'HighTemp'
         self.df.loc[heatwave, 'EventType'] = 'Heatwave'        

@@ -14,17 +14,19 @@ import geoplot.crs as gcrs
 plt.style.use('seaborn-v0_8')
 sns.set_palette('viridis')
 
-def plot_histogram(df, fig_size, subplot_rows, subplot_cols):
+def plot_histogram(df, fig_size, subplot_rows, subplot_cols, cols_to_plot=None):
     ### Uni-variate visualization: Visualize histogram and boxplot of each variables
     ## visualize histogram
 
-    # select numeric columns
-    numeric_columns = df.select_dtypes(include=np.number).columns
+    if cols_to_plot is None:
+        # select numeric columns
+        # numeric_columns = df.select_dtypes(include=np.number).columns
+        cols_to_plot = df.select_dtypes(include=np.number).columns
     
     ## check number of sub-plots
-    if subplot_rows*subplot_cols < len(numeric_columns):
+    if subplot_rows*subplot_cols < len(cols_to_plot):
         print('Number of subplots are insufficient.')
-        print('Number of columns: ', len(numeric_columns))
+        print('Number of columns: ', len(cols_to_plot))
         print('Number of subplots: ', subplot_rows, ' x ', subplot_cols)
         return None
         
@@ -42,7 +44,7 @@ def plot_histogram(df, fig_size, subplot_rows, subplot_cols):
         
     row_index = 0
     col_index = 0
-    for col in numeric_columns:              
+    for col in cols_to_plot:              
         # make required axis visible
         axs[row_index, col_index].set_axis_on()
         sns.histplot(df[col], ax=axs[row_index, col_index], kde=True)
@@ -52,7 +54,7 @@ def plot_histogram(df, fig_size, subplot_rows, subplot_cols):
             col_index = 0
             row_index += 1
             
-    fig.suptitle("Histogram and KDE plot of Climate data.")
+    fig.suptitle("Histogram and KDE plot.")
     plt.tight_layout()
     return fig
 
