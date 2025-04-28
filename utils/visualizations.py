@@ -9,6 +9,7 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import geoplot as gplt
 import geoplot.crs as gcrs
+import math
 
 # Configure global plot style
 plt.style.use('seaborn-v0_8')
@@ -194,3 +195,73 @@ def plot_event_type_districtwise(df):
 
     return fig
 
+def plot_regression_results(y_true, y_pred):
+    """
+    Plot Actual vs Predicted scatter plots for each target variable separately.
+    Handles multi-output regression as well.
+    """
+    n_targets = y_true.shape[1]  # how many target columns
+    subplot_cols = 3
+    subplot_rows = math.ceil(n_targets/subplot_cols)
+    figsize=(5 * subplot_cols, 4 * subplot_rows)
+    fig, axs = plt.subplots(subplot_rows, subplot_cols, figsize=figsize)
+
+    # ## first turn axis off all axs
+    # for ax in axs.flatten():
+    #     ax.set_axis_off()
+
+    for i, ax in enumerate(axs.flatten()):
+        if i<n_targets:
+            # ax.set_axis_on()
+            actual = y_true.iloc[:, i]
+            predicted = y_pred.iloc[:, i]
+
+            ax.scatter(actual, predicted, alpha=0.6, s=5)
+            ax.plot(
+                [actual.min(), actual.max()],  # x-coordinates
+                [actual.min(), actual.max()],  # y-coordinates
+                'k--', lw=2
+            )  # reference line (45-degree diagonal) to compare actual vs predicted.
+            ax.set_xlabel('Actual Values')
+            ax.set_ylabel('Predicted Values')
+            ax.set_title(f'Actual vs Predicted: {y_true.columns[i]}')
+            ax.grid(True)
+        else:
+            ax.set_axis_off()
+
+    plt.tight_layout()
+    return plt
+
+def plot_histogram(df, fig_size, subplot_rows, subplot_cols, cols_to_plot=None):
+    ### Uni-variate visualization: Visualize histogram and boxplot of each variables
+    ## visualize histogram
+    
+        
+    row_index = 0
+    col_index = 0
+    for col in cols_to_plot:              
+        # make required axis visible
+        axs[row_index, col_index].set_axis_on()
+        sns.histplot(df[col], ax=axs[row_index, col_index], kde=True)
+#         ax=axs[row_index, col_index].title.set_text(col)
+        col_index += 1
+        if col_index == subplot_cols:
+            col_index = 0
+            row_index += 1
+            
+    fig.suptitle("Histogram and KDE plot.")
+    plt.tight_layout()
+    return fig
+
+
+def plot_confusion_matrix(conf_matrix, fig_size = (4,3), class_names=None):
+    plt.figure(figsize=fig_size)
+    if class_names is not None:
+        sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', 
+                    xticklabels=class_names, yticklabels=class_names)
+    else:
+        sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues')
+    plt.ylabel('Actual')
+    plt.xlabel('Predicted')
+    plt.title('Confusion Matrix')
+    return plt

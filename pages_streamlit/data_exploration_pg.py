@@ -44,6 +44,10 @@ def show(gdf, df):
         ## multiple tabs
     tab1, tab2, tab3 = st.tabs(["Overview", "Map", "Trends"])
 
+    if 'df_aggregate_monthwise' not in st.session_state:
+        st.session_state['df_aggregate_monthwise'] = aggregated_data_per_month(df)
+
+
     with tab1:
         st.subheader("Climate Data Summary")
         # Show the raw data
@@ -73,7 +77,8 @@ def show(gdf, df):
         st.write(df.describe())
 
         # Get aggregated data per month
-        df_aggregate_monthwise = aggregated_data_per_month(df)
+        # df_aggregate_monthwise = aggregated_data_per_month(df)
+        df_aggregate_monthwise = st.session_state['df_aggregate_monthwise']
 
         st.subheader("Distribution of climate variables.")
         fig = plot_histogram(df_aggregate_monthwise, (10,5), 2, 3)
@@ -136,7 +141,8 @@ def show(gdf, df):
         aggregation_selected = columns_required[selected_variable]['aggregation']
         unit_selected = columns_required[selected_variable]['unit']
         
-        df_average_monthly = aggregated_data_per_month(df) # get aggregated monthwise data
+        # df_average_monthly = aggregated_data_per_month(df) # get aggregated monthwise data
+        df_average_monthly = st.session_state['df_aggregate_monthwise']
         # Filter data
         if selected_district != "All":
             df_filtered = df_average_monthly[df_average_monthly["District"] == selected_district].copy(deep=False)

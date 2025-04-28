@@ -24,7 +24,9 @@ def show(df):
     #     st.session_state['generate_lagged'] = False
 
     added_feature = []
-    st.session_state.df_feature_added = None
+    fe = FeatureEngineering(df)  
+    # st.session_state.df_feature_added = None
+    st.session_state.fe_obj = None
     with st.form("feature_eng_form"):
         st.subheader("Feature Engineering Options")
         col1, col2 = st.columns(2)
@@ -46,7 +48,7 @@ def show(df):
         submit = st.form_submit_button("Apply Feature Engineering")
 
         if submit:
-            fe = FeatureEngineering(df)           
+            # fe = FeatureEngineering(df)           
             
             if generate_temporal:
                 features_add = fe.generate_temporal_features()
@@ -75,16 +77,17 @@ def show(df):
             event_mapping = {i: event for i, event in enumerate(fe.event_type_classes)}
             st.write(f"'EventType' column is encoded with: {event_mapping} and original 'EventType' column deleted")
             
-            st.session_state.df_feature_added = fe.df
+            # st.session_state.df_feature_added = fe.df
             added_feature.extend(['district_encoded','eventtype_encoded'])
             st.success(f"Feature Engineering Applied Successfully! {len(added_feature)} features added.")
 
             st.write('Dataset sample after Feature addition')
-            st.dataframe(st.session_state.df_feature_added.head())
+            st.dataframe(fe.df.head())
             # Show data stats
             col1, col2 = st.columns(2)
             with col1:
-                st.metric("Total Observations",  st.session_state.df_feature_added.shape[0])
+                st.metric("Total Observations",  fe.df.shape[0])
             with col2:
-                st.metric("Variables",  st.session_state.df_feature_added.shape[1])
-    return st.session_state.df_feature_added
+                st.metric("Variables",  fe.df.shape[1])
+    st.session_state.fe_obj = fe
+    return fe.df

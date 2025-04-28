@@ -10,7 +10,7 @@ class FeatureEngineering:
         self.df = df.copy() # Prevent modifying original DataFrame
         self.label_encoder = label_encoder if label_encoder else LabelEncoder()
         self.climate_cols = [col for col in df.columns if col not in ['Date', 'District','EventType', 'ExtremeEvent']]
-        print(self.climate_cols)
+        # print(self.climate_cols)
         
     def feature_engineering_pipeline(self, rolling_window=7, lag_period=7):
         """
@@ -91,7 +91,6 @@ class FeatureEngineering:
 
         # Drop rows with NaN values (this will drop the first 'lag' rows)
         self.df.dropna(inplace=True)  # Inplace will modify the DataFrame directly
-        
         return tuple(added_cols)
 
     def generate_combined_features(self):
@@ -104,7 +103,8 @@ class FeatureEngineering:
         # self.df['precip_wind_combined'] = self.df['Precip'] * self.df['WindSpeed_10m']
         # Interaction between temperature and precipitation
         self.df['temp_precip_combined'] = self.df['Temp_2m'] * self.df['Precip']
-        return ('temp_humidity_combined', 'temp_precip_combined')
+        self.df['temp_range'] = self.df['MaxTemp_2m'] - self.df['MinTemp_2m']
+        return ('temp_humidity_combined', 'temp_precip_combined', 'temp_range')
 
     def encode_district(self):
         """

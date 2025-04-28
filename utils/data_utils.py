@@ -80,13 +80,13 @@ class PrepareData:
             df : DataFrame input for Data Preparation. This is dataframe after feature engineering columns are added
         """
         self.df = df.copy()
-        self.input_columns = df.columns
+        self.all_columns = df.columns
 
     def prepare_data(self, target_cols, exclude_cols):
         """
         Prepare data from given target columns and exclusion columns
         """
-        feature_cols = [col for col in self.input_columns if col not in target_cols + exclude_cols]
+        feature_cols = [col for col in self.all_columns if col not in target_cols + exclude_cols]
         
         X = self.df[feature_cols]
         y = self.df[target_cols]
@@ -106,20 +106,22 @@ class PrepareData:
         
         return self.prepare_data(target_cols, exclude_cols)
 
-    def prepare_data_multi_classifier(self):
+    def prepare_data_multi_classifier(self, direct_features = ['Temp_2m', 'MinTemp_2m', 'MaxTemp_2m', 'Precip']):
         """
         prepare data for multi-class classifier
+        direct_features are List of features to exclude from the dataset
         """
-        target_cols = ['eventtype_encoded']    
-        exclude_cols = ['Date', 'ExtremeEvent']
+        target_cols = ['eventtype_encoded']    # the target column for multi-class classification
+        exclude_cols = ['Date', 'ExtremeEvent'] + direct_features # columns to exclude (date, binary event flag, and direct features)
 
         return self.prepare_data(target_cols, exclude_cols)
 
-    def prepare_data_binary_classifier(self):
+    def prepare_data_binary_classifier(self, direct_features = ['Temp_2m', 'MinTemp_2m', 'MaxTemp_2m', 'Precip']):
         """
         prepare data for binary classifier
+        direct_features are List of features to exclude from the dataset
         """
-        target_cols = ['ExtremeEvent']    
-        exclude_cols = ['Date', 'eventtype_encoded']
+        target_cols = ['ExtremeEvent']    # the target column for binary classification
+        exclude_cols = ['Date', 'eventtype_encoded'] + direct_features # columns to exclude (date, categorical eventtype_encoded, and direct features)
 
         return self.prepare_data(target_cols, exclude_cols)
