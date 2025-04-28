@@ -1,15 +1,18 @@
 import streamlit as st
-from pathlib import Path
-import os
-import sys
+# from pathlib import Path
+# import os
+# import sys
 import matplotlib.pyplot as plt
 import seaborn as sns
 import math
 
-utils_dir = os.path.join(Path(__file__).parent, "utils")
-sys.path.append(utils_dir)
-from feature_engineering import FeatureEngineering
-from visualizations import plot_histogram
+# utils_dir = os.path.join(Path(__file__).parent, "utils")
+# sys.path.append(utils_dir)
+# from feature_engineering import FeatureEngineering
+# from visualizations import plot_histogram
+
+from utils.feature_engineering import FeatureEngineering
+from utils.visualizations import plot_histogram
 
 def show(df):
     """

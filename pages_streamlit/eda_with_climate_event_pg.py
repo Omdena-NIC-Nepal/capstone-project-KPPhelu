@@ -1,5 +1,6 @@
 import streamlit as st
-from visualizations import plot_event_type_distribution, plot_event_type_districtwise
+# from visualizations import plot_event_type_distribution, plot_event_type_districtwise
+from utils.visualizations import plot_event_type_distribution, plot_event_type_districtwise
 
 def show(gdf, df, thresholds):
     """

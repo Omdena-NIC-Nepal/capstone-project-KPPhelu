@@ -4,14 +4,18 @@ from pathlib import Path
 import sys
 import os
 
-utils_dir = os.path.join(Path(__file__).parent, "utils")
-sys.path.append(utils_dir)
-from data_utils import DataLoader
+# utils_dir = os.path.join(Path(__file__).parent, "utils")
+# sys.path.append(utils_dir)
+# from data_utils import DataLoader
+# from data_utils import DataLoader
+# from preprocessing import DataPreprocessor
+# from visualizations import plot_histogram, plot_pairplot, plot_correlation_heatmap 
+# from visualizations import plot_district_map, choropleth_map, plot_time_series, plot_boxplot_monthly
 
-from data_utils import DataLoader
-from preprocessing import DataPreprocessor
-from visualizations import plot_histogram, plot_pairplot, plot_correlation_heatmap 
-from visualizations import plot_district_map, choropleth_map, plot_time_series, plot_boxplot_monthly
+from utils.data_utils import DataLoader
+from utils.preprocessing import DataPreprocessor
+from utils.visualizations import plot_histogram, plot_pairplot, plot_correlation_heatmap 
+from utils.visualizations import plot_district_map, choropleth_map, plot_time_series, plot_boxplot_monthly
 
 
 columns_required = {'Precip': {'aggregation': 'mean', 'unit': 'mm/day'},
