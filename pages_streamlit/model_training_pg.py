@@ -86,6 +86,7 @@ def show(fe = None):
                 # st.json(metrics_reg)
                 plt_reg_test = plot_regression_results(metrics_reg['y_test'], metrics_reg['y_pred_test'])
                 st.pyplot(plt_reg_test)
+                save_model(model_reg, scaler_reg, 'regression')
 
             ### 2. Multi-Class Classifier Training
             st.subheader("Training Multi-Class Classifier Model...")
@@ -108,6 +109,7 @@ def show(fe = None):
                 st.success("✅ Multi-Class Classifier Model Trained Successfully!")
                 st.subheader("Multi-Class Classifier Metrics")
                 show_metrics(metrics_multi, class_names = st.session_state.fe_obj.event_type_classes)
+                save_model(model_multi, scaler_multi, 'multi_class_classifier')
                                
             ### 3. Binary Classifier Training
             st.subheader("Training Binary Classifier Model...")
@@ -130,6 +132,7 @@ def show(fe = None):
                 st.success("✅ Binary Classifier Model Trained Successfully!")
                 st.subheader("Binary Classifier Metrics")
                 show_metrics(metrics_binary, class_names = None)
+                save_model(model_binary, scaler_binary, 'binary_classifier')
 
             st.success("🎯 All Models Trained Successfully!")
        

@@ -6,6 +6,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, confusion_matrix, classification_report
 import pickle
+import os
 
 def split_data(X, y, test_size=0.2, random_state=42):
     X_train, X_test, y_train, y_test = train_test_split(
@@ -101,11 +102,16 @@ def save_model(model, scaler, model_name):
     Save the trained model and scaler to disk.
     model_name: string without extension
     """
-    with open(f'{model_name}_model.pkl', 'wb') as file:
+    # Make sure the 'models/' directory exists
+    os.makedirs("models", exist_ok=True)
+
+    # save the model
+    with open(f'models/{model_name}_model.pkl', 'wb') as file:
         pickle.dump(model, file)
-    if scaler:
-        with open(f'{model_name}_scaler.pkl', 'wb') as file:
-            pickle.dump(model, file)
+    # Save the scaler if it exists
+    if scaler is not None:
+        with open(f'models/{model_name}_scaler.pkl', 'wb') as file:
+            pickle.dump(scaler, file)
     
 
 def load_model(model_name):
@@ -113,13 +119,15 @@ def load_model(model_name):
     Load the trained model and scaler from disk.
     model_name: string without extension
     """
+    # load model
     try:
-        with open(f"{model_name}_model.pkl", 'rb') as file:
+        with open(f'models/{model_name}_model.pkl', 'rb') as file:
             model = pickle.load(file)
     except FileNotFoundError:
         model =  None
+    # load scaler
     try:
-        with open(f"{model_name}_scaler.pkl", 'rb') as file:
+        with open(f'models/{model_name}_scaler.pkl', 'rb') as file:
             scaler = pickle.load(file)
     except:
         scaler = None

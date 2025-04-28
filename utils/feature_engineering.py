@@ -103,8 +103,8 @@ class FeatureEngineering:
         # self.df['precip_wind_combined'] = self.df['Precip'] * self.df['WindSpeed_10m']
         # Interaction between temperature and precipitation
         self.df['temp_precip_combined'] = self.df['Temp_2m'] * self.df['Precip']
-        self.df['temp_range'] = self.df['MaxTemp_2m'] - self.df['MinTemp_2m']
-        return ('temp_humidity_combined', 'temp_precip_combined', 'temp_range')
+        # self.df['temp_range'] = self.df['MaxTemp_2m'] - self.df['MinTemp_2m'] # direct feature
+        return ('temp_humidity_combined', 'temp_precip_combined')
 
     def encode_district(self):
         """

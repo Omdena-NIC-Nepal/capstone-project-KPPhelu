@@ -45,7 +45,7 @@ label_generator.label_generation_pipeline()
 st.sidebar.title("Navigation")
 st.sidebar.info("Navigate through the pages.")
 page = st.sidebar.radio("Go to:", ["Home","Data Exploration", "EDA with climate events", "Feature Engineering",
-                                   "Model Training", "Prediction", "About"])
+                                   "Model Training and Evaluation", "Prediction", "About"])
 
 
 # Display the selected page

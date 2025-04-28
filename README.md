@@ -8,6 +8,8 @@ Extreme Weather Event Detection and Prediction ML Project-Nepal App /
 |   |-- Shape_Data_district/          # Shape file of Nepal District boundary
 |   |-- dailyclimate.csv        # Daily climate data of Nepal
 |
+|-- models/    # Saved trained models and scalers
+|
 |-- utils/
 |   |-- data_utils.py       # Data Laoding
 |   |-- preprocessing.py    # Data pre-processing
@@ -21,10 +23,10 @@ Extreme Weather Event Detection and Prediction ML Project-Nepal App /
 |   |-- home_pg.py
 |   |-- data_exploration_pg.py
 |   |-- eda_with_climate_event_pg.py
-|   |-- model_training.py
+|   |-- model_training_pg.py
 |   |-- prediction_pg.py 
-|   |-- about.py
-|
+|   |-- about_pg.py
+| 
 |-- requirements.txt        # Project dependencies
 |-- README.md
 
