@@ -94,11 +94,26 @@ def predict_until_date(regression_model, regression_scaler, multi_class_model, b
 
         # Scale input features if scaler is available
         if regression_scaler is not None:
-            input_features_scaled = regression_scaler.transform(input_features)
+            # Ensure scaler sees features in same order as training
+            if hasattr(regression_scaler, 'feature_names_in_'):  # sklearn >=1.0
+                input_for_scaler = input_features[regression_scaler.feature_names_in_]
+            elif hasattr(regression_scaler, 'feature_names_'):  # Custom fallback
+                input_for_scaler = input_features[regression_scaler.feature_names_]
+            else:
+                input_for_scaler = input_features
+            input_features_scaled = regression_scaler.transform(input_for_scaler)
         else:
             input_features_scaled = input_features
 
-        predicted_values = regression_model.predict(input_features_scaled)[0]
+        # Handle features order
+        if hasattr(regression_model, 'feature_names_in_'):  # sklearn >=1.0
+            input_for_reg = input_features_scaled[regression_model.feature_names_in_]
+        elif hasattr(regression_model, 'feature_names_'):  # Custom fallback
+            input_for_reg = input_features_scaled[regression_model.feature_names_in_]
+        else:
+            input_for_reg = input_features_scaled
+
+        predicted_values = regression_model.predict(input_for_reg)[0]
 
         new_row = {
             'Date': current_date,
@@ -183,8 +198,22 @@ def predict_until_date(regression_model, regression_scaler, multi_class_model, b
     input_for_classification = predicted_df.drop(columns=[col for col in exclude_cols if col in predicted_df.columns])
 
     # Ensure input features match the ones used during training (both models)
-    input_for_multiclass = input_for_classification[multi_class_model.feature_names_in_]
-    input_for_binary = input_for_classification[binary_class_model.feature_names_in_]
+    # input_for_multiclass = input_for_classification[multi_class_model.feature_names_in_]
+    # input_for_binary = input_for_classification[binary_class_model.feature_names_in_]
+    # safe way to use feature names
+    if hasattr(multi_class_model, 'feature_names_in_'):
+        input_for_multiclass = input_for_classification[multi_class_model.feature_names_in_] # sklearn >=1.0
+    elif hasattr(multi_class_model, 'feature_names_'):
+        input_for_multiclass = input_for_classification[multi_class_model.feature_names_] # Custom fallback
+    else:
+        input_for_multiclass = input_for_classification
+    
+    if hasattr(binary_class_model, 'feature_names_in_'):
+        input_for_binary = input_for_classification[binary_class_model.feature_names_in_]
+    elif hasattr(binary_class_model, 'feature_names_'):
+        input_for_binary = input_for_classification[binary_class_model.feature_names_]
+    else:
+        input_for_binary = input_for_classification
 
     # Make predictions of event type and its probability
     predicted_event_types = multi_class_model.predict(input_for_multiclass)

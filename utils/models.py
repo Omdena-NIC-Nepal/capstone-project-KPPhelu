@@ -23,6 +23,10 @@ def train_model(X_train, y_train, model_type):
     train the model based on the the model type
     Model type can be one of: ["Regression", "Multi-Class Classifier", "Binary Classifier"]
     """
+    # Convert to numpy arrays if they're DataFrames
+    X_train = X_train.values if isinstance(X_train, pd.DataFrame) else X_train
+    y_train = y_train.values if isinstance(y_train, pd.DataFrame) else y_train
+
     scaler = None
     if model_type == "Regression":
         model = LinearRegression()
@@ -46,6 +50,13 @@ def train_model(X_train, y_train, model_type):
         model.fit(X_train_scaled, y_train)
     else:
         model.fit(X_train, y_train)
+    
+    # Store feature names for later use
+    if hasattr(X_train, 'columns'): # in case sklearn < 1.0 save features name from X_train column name
+        # For sklearn >=1.0 built-in 'feature_names_in_' exists
+        model.feature_names_ = list(X_train.columns)
+        scaler.feature_names_ = list(X_train.columns)
+
     return model, scaler
 
 def predict_model(X_test, model, scaler=None):
