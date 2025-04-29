@@ -31,4 +31,3 @@ Extreme Weather Event Detection and Prediction ML Project-Nepal App /
 |-- requirements.txt        # Project dependencies
 |-- README.md
 |-- .gitignore
-

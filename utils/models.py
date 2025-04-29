@@ -7,6 +7,11 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, confusion_matrix, classification_report
 import pickle
 import os
+import warnings
+from sklearn.exceptions import DataConversionWarning
+
+# Suppress specific warnings
+warnings.filterwarnings('ignore', category=DataConversionWarning)
 
 def split_data(X, y, test_size=0.2, random_state=42):
     X_train, X_test, y_train, y_test = train_test_split(
