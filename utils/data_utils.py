@@ -1,8 +1,6 @@
 """
 This file handles data loading
 """
-
-import os
 import pandas as pd
 import geopandas as gpd
 from pathlib import Path

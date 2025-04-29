@@ -1,8 +1,5 @@
 import streamlit as st
 import pandas as pd
-from pathlib import Path
-import sys
-import os
 
 # utils_dir = os.path.join(Path(__file__).parent, "utils")
 # sys.path.append(utils_dir)
@@ -33,11 +30,34 @@ agg_dict = {}  ## dictionary representing aggregation function for each columns
 for key,value in columns_required.items():
     agg_dict[key] = value['aggregation']
 
+def find_date_column(df):
+    """Case-insensitive date column detection"""
+    date_cols = ['date', 'datetime', 'time', 'timestamp']
+    for col in df.columns:
+        if str(col).lower() in date_cols:
+            return col
+    return None
+
 def show(gdf, df):
     """
     Display the data exploration page
     """
     st.title("Data Exploration")
+
+    # 1. Date column handling
+    date_col = find_date_column(df)
+    if not date_col:
+        st.error("❌ No date column found in data. Available columns: " + ", ".join(df.columns))
+        return
+    
+    try:
+        # Convert to datetime and sort
+        df['Date'] = pd.to_datetime(df[date_col])
+        df = df.sort_values('Date')
+    except Exception as e:
+        st.error(f"Failed to parse dates: {str(e)}")
+        st.write("Sample date values:", df[date_col].head(3))
+        return
 
     # Compute outside the tab so it's not repeated on selectbox or other widget changes
     # Only compute heavy stuff once and store in session, to avoid re-compute on selectbox or other widget changes 
@@ -51,7 +71,6 @@ def show(gdf, df):
     if 'df_aggregate_monthwise' not in st.session_state:
         st.session_state['df_aggregate_monthwise'] = aggregated_data_per_month(df)
 
-
     with tab1:
         st.subheader("Climate Data Summary")
         # Show the raw data
@@ -60,8 +79,13 @@ def show(gdf, df):
             st.metric("Total Observations", df.shape[0])
             st.metric("Variables", df.shape[1])
         with col2:
-            st.metric("Date Range", 
-                        f"{df['Date'].min().date()} to {df['Date'].max().date()}")
+            # print("Available columns:", df.columns.tolist())
+            if "Date" in df.columns and not df["Date"].empty:
+                st.metric("Date Range", f"{df['Date'].min().date()} to {df['Date'].max().date()}")
+            else:
+                st.warning("Date information not available.")
+
+            # st.metric("Date Range", f"{df['Date'].min().date()} to {df['Date'].max().date()}")
             st.metric("Districts Covered", len(df['District'].unique()))
 
         # st.markdown("### Dataset Snapshot")

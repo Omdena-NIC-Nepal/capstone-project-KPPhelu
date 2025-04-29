@@ -69,7 +69,7 @@ class FeatureEngineering:
         # Rolling 7-day average for temperature and precipitation
         added_cols = []
         for col in columns:
-            col_name = f'{col}_{window}d_avg'
+            col_name = f'{col}_rolling_avg'
             self.df[col_name] = self.df.groupby('District')[col].transform(
                 lambda x: x.rolling(window, min_periods=1).mean())
             added_cols.append(col_name)
@@ -84,7 +84,7 @@ class FeatureEngineering:
             columns = self.climate_cols
         added_cols = []
         for col in columns:
-            col_name = f'{col}_lag{lag}'
+            col_name = f'{col}_lagged'
             self.df[col_name] = self.df.groupby('District')[col].transform(
                 lambda x: x.shift(lag))
             added_cols.append(col_name)

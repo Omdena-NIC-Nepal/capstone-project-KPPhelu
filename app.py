@@ -43,7 +43,7 @@ label_generator.label_generation_pipeline()
 
 # Give the sidebar for the app navigation
 st.sidebar.title("Navigation")
-st.sidebar.info("Navigate through the pages.")
+st.sidebar.info("Navigate through the pages sequentially.")
 page = st.sidebar.radio("Go to:", ["Home","Data Exploration", "EDA with climate events", "Feature Engineering",
                                    "Model Training and Evaluation", "Prediction", "About"])
 
@@ -58,7 +58,7 @@ elif page == "EDA with climate events":
                                    thresholds = label_generator.thresholds)
 elif page == "Feature Engineering":
     feature_engineering_pg.show(label_generator.df)
-elif page == 'Model Training':
+elif page == 'Model Training and Evaluation':
     model_training_pg.show()
 elif page == "Prediction":
     prediction_pg.show()

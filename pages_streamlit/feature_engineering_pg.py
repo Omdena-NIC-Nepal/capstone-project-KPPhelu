@@ -1,10 +1,4 @@
 import streamlit as st
-# from pathlib import Path
-# import os
-# import sys
-import matplotlib.pyplot as plt
-import seaborn as sns
-import math
 
 # utils_dir = os.path.join(Path(__file__).parent, "utils")
 # sys.path.append(utils_dir)
@@ -34,19 +28,21 @@ def show(df):
         st.subheader("Feature Engineering Options")
         col1, col2 = st.columns(2)
         with col1:
-            generate_temporal = st.checkbox("Generate Temporal Features", value=True)
-            generate_cyclical = st.checkbox("Generate Cyclical Features", value=True)
-            generate_combined = st.checkbox("Generate Combined Features", value=True)
+            generate_temporal = st.checkbox("Generate Temporal Features", value=True, disabled=True)
+            generate_cyclical = st.checkbox("Generate Cyclical Features", value=True, disabled=True)
+            generate_combined = st.checkbox("Generate Combined Features", value=True, disabled=True)
         with col2:
             col21, col22 = st.columns(2)
             with col21:
-                generate_rolling = st.checkbox("Generate Rolling Features", value=True)
+                generate_rolling = st.checkbox("Generate Rolling Features", value=True, disabled=True)
                 window_size = st.slider("Rolling Window Size (days)", 3, 15, 7,
                                         help="Only used if 'Generate Rolling Features' is checked.")
+                st.session_state['rolling_window_size'] = window_size
             with col22:
-                generate_lagged = st.checkbox("Generate Lagged Features", value=True)
+                generate_lagged = st.checkbox("Generate Lagged Features", value=True, disabled=True)
                 lag_value = st.slider("Lag Value (days)", 1, 20, 7,
                                       help="Only used if 'Generate Lagged Features' is checked.")
+                st.session_state['lag_days'] = lag_value
 
         submit = st.form_submit_button("Apply Feature Engineering")
 

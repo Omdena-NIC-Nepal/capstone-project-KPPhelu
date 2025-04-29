@@ -12,7 +12,7 @@ import pandas as pd
 
 from utils.data_utils import PrepareData
 from utils.models import split_data, train_model, evaluate_model, save_model
-from utils.visualizations import plot_confusion_matrix, plot_regression_results
+from utils.visualizations import plot_confusion_matrix, plot_regression_evaluation
 
 def show(fe = None):
     """
@@ -84,7 +84,7 @@ def show(fe = None):
                 st.subheader("Regression Model Metrics")
                 show_metrics(metrics_reg)
                 # st.json(metrics_reg)
-                plt_reg_test = plot_regression_results(metrics_reg['y_test'], metrics_reg['y_pred_test'])
+                plt_reg_test = plot_regression_evaluation(metrics_reg['y_test'], metrics_reg['y_pred_test'])
                 st.pyplot(plt_reg_test)
                 save_model(model_reg, scaler_reg, 'regression')
 
@@ -92,7 +92,7 @@ def show(fe = None):
             st.subheader("Training Multi-Class Classifier Model...")
             st.markdown("""        
             **Multi-Class Classifier** is used to predict one of several categories (classes). 
-            In this case, the model will be predicting the type of events ['ColdWave', 'HighTemp', 'Heatwave', 'HeavyRain'].
+            In this case, the model will be predicting the type of events ['Normal', 'ColdWave', 'HighTemp', 'Heatwave', 'HeavyRain'].
             """)
             progress_multi = st.progress(0)
             with st.spinner("Training Multi-Class Classifier Model..."):

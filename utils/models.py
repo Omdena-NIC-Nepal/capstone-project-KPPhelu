@@ -25,10 +25,10 @@ def train_model(X_train, y_train, model_type):
         scaler = StandardScaler()
         
     elif model_type == "Multi-Class Classifier":
-        model = RandomForestClassifier(n_estimators=25, n_jobs=-1)
+        model = RandomForestClassifier(n_estimators=20, n_jobs=-1)
         # No Scaling for RandomForestClassifier. No need scaling for tree-based models
     elif model_type == "Binary Classifier":
-        model = RandomForestClassifier(n_estimators=25, n_jobs=-1)
+        model = RandomForestClassifier(n_estimators=20, n_jobs=-1)
         # No Scaling for RandomForestClassifier. No need scaling for tree-based models
     else:
         raise ValueError('"model_type" must be one of ["Regression", "Multi-Class Classifier", "Binary Classifier"]')

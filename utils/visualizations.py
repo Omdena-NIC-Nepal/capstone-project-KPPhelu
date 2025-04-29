@@ -2,6 +2,7 @@
 This file deals with the visualization functions
 """
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
@@ -64,7 +65,7 @@ def plot_pairplot(df):
     fig = sns.pairplot(df)
     return fig
     
-def plot_correlation_heatmap(df, figsize=(8,8), annot=True):
+def plot_correlation_heatmap(df, figsize=(6,6), annot=True):
     # select numeric columns
     numeric_columns = df.select_dtypes(include=np.number).columns
     corr_matrix = df[numeric_columns].corr()
@@ -195,7 +196,7 @@ def plot_event_type_districtwise(df):
 
     return fig
 
-def plot_regression_results(y_true, y_pred):
+def plot_regression_evaluation(y_true, y_pred):
     """
     Plot Actual vs Predicted scatter plots for each target variable separately.
     Handles multi-output regression as well.
@@ -232,28 +233,6 @@ def plot_regression_results(y_true, y_pred):
     plt.tight_layout()
     return plt
 
-def plot_histogram(df, fig_size, subplot_rows, subplot_cols, cols_to_plot=None):
-    ### Uni-variate visualization: Visualize histogram and boxplot of each variables
-    ## visualize histogram
-    
-        
-    row_index = 0
-    col_index = 0
-    for col in cols_to_plot:              
-        # make required axis visible
-        axs[row_index, col_index].set_axis_on()
-        sns.histplot(df[col], ax=axs[row_index, col_index], kde=True)
-#         ax=axs[row_index, col_index].title.set_text(col)
-        col_index += 1
-        if col_index == subplot_cols:
-            col_index = 0
-            row_index += 1
-            
-    fig.suptitle("Histogram and KDE plot.")
-    plt.tight_layout()
-    return fig
-
-
 def plot_confusion_matrix(conf_matrix, fig_size = (4,3), class_names=None):
     plt.figure(figsize=fig_size)
     if class_names is not None:
@@ -265,3 +244,56 @@ def plot_confusion_matrix(conf_matrix, fig_size = (4,3), class_names=None):
     plt.xlabel('Predicted')
     plt.title('Confusion Matrix')
     return plt
+
+def plot_regression_predictions(historical_df, predicted_df, district_encoded, district_name=None):
+    """
+    Plots historical and predicted climate variables in separate subplots.
+    """
+    # Filter for specific district
+    historical = historical_df[
+        (historical_df["district_encoded"] == district_encoded) &
+        (historical_df["Date"] >= pd.to_datetime("2010-01-01"))
+    ].copy()
+    # historical = historical_df[historical_df["district_encoded"] == district_encoded].copy()
+    predicted = predicted_df.copy()
+
+    # Combine the data
+    historical["source"] = "Historical"
+    predicted["source"] = "Predicted"
+    combined = pd.concat([historical, predicted], ignore_index=True)
+    
+    # Plot climate variables
+    plt.figure(figsize=(12, 6))
+    # variables_to_plot = ['Precip', 'Humidity_2m', 'Temp_2m', 'MinTemp_2m', 'MaxTemp_2m', ]
+    variables_to_plot = {
+        'Precip': 'mm',
+        'Humidity_2m': '%',
+        'Temp_2m': '°C',
+        'MinTemp_2m': '°C',
+        'MaxTemp_2m': '°C'
+    }
+
+    # Create figure with subplots
+    fig, axes = plt.subplots(len(variables_to_plot), 1, figsize=(10, 4*len(variables_to_plot)))
+    fig.suptitle(f"Climate Historical and Forecast Data for District {district_name or ''} ({district_encoded})", y=1.02)
+
+    # Plot each variable in its own subplot
+    for i, var in enumerate(variables_to_plot.items()):
+        ax = axes[i]
+        
+        # Plot historical and predicted data
+        ax.plot(historical['Date'], historical[var[0]], label="Historical", color='blue')
+        ax.plot(predicted['Date'], predicted[var[0]], label="Predicted", color='orange')
+        
+        # Highlight prediction start
+        ax.axvline(predicted["Date"].min(), color='red', linestyle='--', alpha=0.7)
+        
+        # Customize subplot
+        ax.set_title(var[0])
+        ax.set_xlabel("Date")
+        ax.set_ylabel(f"{var[0]} ({var[1]})")
+        ax.legend()
+        ax.grid(True)
+
+    plt.tight_layout()
+    return fig
