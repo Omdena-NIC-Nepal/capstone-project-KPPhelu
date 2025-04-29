@@ -40,7 +40,7 @@ This Streamlit application helps explore historical weather patterns and predict
 
 ---
 # The Project Structure:
-
+```
 Extreme Weather Event Detection and Prediction ML Project-Nepal App/
 ├── app.py # Main Streamlit app
 ├── data/
@@ -66,7 +66,7 @@ Extreme Weather Event Detection and Prediction ML Project-Nepal App/
 ├── requirements.txt # Project dependencies
 ├── README.md
 └── .gitignore
-
+```
 ## 📌 Features
 
 - Interactive **Data Exploration** by district and date
