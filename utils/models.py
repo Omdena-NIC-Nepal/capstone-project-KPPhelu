@@ -118,6 +118,7 @@ def save_model(model, scaler, model_name):
     Save the trained model and scaler to disk.
     model_name: string without extension
     """
+    print(f'saving model: "{model_name}"')
     # Make sure the 'models/' directory exists
     os.makedirs("models", exist_ok=True)
 

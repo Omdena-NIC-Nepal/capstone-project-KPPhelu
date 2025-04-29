@@ -31,3 +31,23 @@ Extreme Weather Event Detection and Prediction ML Project-Nepal App /
 |-- requirements.txt        # Project dependencies
 |-- README.md
 |-- .gitignore
+
+
+# 🌩️ Extreme Weather Event Detection and Prediction in Nepal
+
+This Streamlit application helps explore historical weather patterns and predict future extreme weather events in Nepal. It uses geospatial and climate data along with machine learning models to provide real-time analytics and visualizations.
+
+---
+
+## 📌 Features
+
+- Interactive **Data Exploration** by district and date
+- Forecasting of **temperature**, **precipitation**, and **wind speed**
+- Classification of **extreme weather events**
+- **Geospatial visualizations** of climate variables
+
+---
+
+## 📁 Folder Structure
+
+. ├── app.py # Main Streamlit app ├── requirements.txt # Dependencies ├── README.md # Project documentation ├── data/ # Input data files ├── models/ # Trained ML models ├── pages_streamlit/ # Streamlit UI pages │ ├── data_exploration_pg.py │ ├── prediction_pg.py │ └── about_pg.py ├── utils/ # Helper functions │ ├── data_loader.py │ ├── preprocessor.py │ ├── predictor.py │ └── visualizer.py
