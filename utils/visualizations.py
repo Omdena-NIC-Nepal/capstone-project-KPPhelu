@@ -235,7 +235,7 @@ def plot_regression_evaluation(y_true, y_pred):
 
 def plot_confusion_matrix(conf_matrix, fig_size = (4,3), class_names=None):
     plt.figure(figsize=fig_size)
-    if class_names is not None:
+    if class_names != None:
         sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', 
                     xticklabels=class_names, yticklabels=class_names)
     else:

@@ -99,7 +99,7 @@ def display_last_day_predictions(prediction):
     warning_container = st.container()
     
     with warning_container:
-        if prediction['EventType_Label'] is not 'Unknown':
+        if prediction['EventType_Label'] != 'Unknown':
             emoji = "⚠️" if prediction['EventType_Prob'] > 0.3 else "ℹ️"
             st.warning(f"{emoji} Predicted Event: **{prediction['EventType_Label']}** (Probability: {prediction['EventType_Prob']:.0%})")
         else:

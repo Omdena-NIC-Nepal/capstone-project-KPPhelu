@@ -93,15 +93,16 @@ def predict_until_date(regression_model, regression_scaler, multi_class_model, b
         input_features_dict = input_features.iloc[0].to_dict()
 
         # Scale input features if scaler is available
-        if regression_scaler is not None:
+        if regression_scaler != None:
             # Ensure scaler sees features in same order as training
-            if hasattr(regression_scaler, 'feature_names_in_'):  # sklearn >=1.0
-                input_for_scaler = input_features[regression_scaler.feature_names_in_]
-            elif hasattr(regression_scaler, 'feature_names_'):  # Custom fallback
-                input_for_scaler = input_features[regression_scaler.feature_names_]
-            else:
-                input_for_scaler = input_features
-            input_features_scaled = regression_scaler.transform(input_for_scaler)
+            # if hasattr(regression_scaler, 'feature_names_in_'):  # sklearn >=1.0
+            #     input_for_scaler = input_features[regression_scaler.feature_names_in_]
+            # elif hasattr(regression_scaler, 'feature_names_'):  # Custom fallback
+            #     input_for_scaler = input_features[regression_scaler.feature_names_]
+            # else:
+            #     input_for_scaler = input_features
+            # input_features_scaled = regression_scaler.transform(input_for_scaler)
+            input_features_scaled = regression_scaler.transform(input_features)
         else:
             input_features_scaled = input_features
 

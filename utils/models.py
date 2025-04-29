@@ -126,7 +126,7 @@ def save_model(model, scaler, model_name):
     with open(f'models/{model_name}_model.pkl', 'wb') as file:
         pickle.dump(model, file)
     # Save the scaler if it exists
-    if scaler is not None:
+    if scaler != None:
         with open(f'models/{model_name}_scaler.pkl', 'wb') as file:
             pickle.dump(scaler, file)
     
