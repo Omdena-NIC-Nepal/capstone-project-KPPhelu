@@ -127,7 +127,7 @@ def show(gdf, df):
     with tab2:
         ## map of nepal with district boundary
         st.subheader("District Map of Nepal")
-        if gdf != None:
+        if gdf is not None:
             fig = plot_district_map(gdf)
             st.pyplot(fig)
         else:
