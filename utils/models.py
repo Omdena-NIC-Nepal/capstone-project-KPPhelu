@@ -63,6 +63,9 @@ def predict_model(X_test, model, scaler=None):
     """
     Predict using the trained model. Apply scaling if needed.
     """
+    # Convert to numpy arrays if they're DataFrames
+    X_test = X_test.values if isinstance(X_test, pd.DataFrame) else X_test
+
     if scaler:
         # Scale the test data using the same scaler fitted on training data
         X_test_scaled = scaler.transform(X_test)

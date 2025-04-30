@@ -14,7 +14,18 @@ def load_cached_shape_file(shape_file):
 @st.cache_data(show_spinner="Loading climate data...", ttl=3600)
 def load_cached_climate_data(climate_file):
     st.info("Loading climate CSV from cache...")
-    return pd.read_csv(climate_file)
+    df = pd.read_csv(climate_file)
+    df = preprocess_dates(df)
+    return df
+
+def preprocess_dates(df):
+    """Ensure proper datetime serialization"""
+    if 'Date' in df.columns:
+        # Convert to datetime and normalize to avoid nanoseconds
+        df['Date'] = pd.to_datetime(df['Date']).dt.normalize()
+        # Convert to string for Arrow compatibility
+        df['Date'] = df['Date'].dt.strftime('%Y-%m-%d')
+    return df
 
 class DataLoader:
     """
