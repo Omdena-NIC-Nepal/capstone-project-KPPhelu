@@ -39,7 +39,7 @@ Extreme Weather Event Detection and Prediction ML Project-Nepal App /
 This Streamlit application helps explore historical weather patterns and predict future extreme weather events in Nepal. It uses geospatial and climate data along with machine learning models to provide real-time analytics and visualizations.
 
 ---
-# The Project Structure:
+# 📁 The Project Structure:
 ```
 Extreme Weather Event Detection and Prediction ML Project-Nepal App /
 |
@@ -82,6 +82,7 @@ Extreme Weather Event Detection and Prediction ML Project-Nepal App /
 
 ---
 
-## 📁 Folder Structure
+## App links 
 
-. ├── app.py # Main Streamlit app ├── requirements.txt # Dependencies ├── README.md # Project documentation ├── data/ # Input data files ├── models/ # Trained ML models ├── pages_streamlit/ # Streamlit UI pages │ ├── data_exploration_pg.py │ ├── prediction_pg.py │ └── about_pg.py ├── utils/ # Helper functions │ ├── data_loader.py │ ├── preprocessor.py │ ├── predictor.py │ └── visualizer.py
+github link: : https://github.com/Omdena-NIC-Nepal/capstone-project-KPPhelu 
+streamlit app link: https://omdena-nic-nepal-capstone-project-kpphelu-app-2xrh3e.streamlit.app/ 

@@ -103,8 +103,8 @@ def show(fe = None):
                 progress_multi.progress(60)
                 metrics_multi = evaluate_model(model_multi, scaler_multi, X_train_multi, y_train_multi, X_test_multi, y_test_multi, "Multi-Class Classifier")
                 progress_multi.progress(90)
-                st.session_state['model_multi'] = model_reg
-                st.session_state['scaler_multi'] = scaler_reg
+                st.session_state['model_multi'] = model_multi
+                st.session_state['scaler_multi'] = scaler_multi
                 progress_multi.progress(100)
                 st.success("✅ Multi-Class Classifier Model Trained Successfully!")
                 st.subheader("Multi-Class Classifier Metrics")
