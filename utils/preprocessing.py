@@ -49,7 +49,7 @@ class DataPreprocessor:
         Convert Date column into datetime format if it exists
         """
         if date_column in self.df.columns:
-            self.df[date_column] = pd.to_datetime(self.df[date_column], errors="coerce")
+            self.df[date_column] = pd.to_datetime(self.df[date_column], errors="coerce").dt.floor('ms')
             print(f"'{date_column}' column converted to datetime format.")
 
     def drop_missing(self, key_columns = ['Date', 'District']):

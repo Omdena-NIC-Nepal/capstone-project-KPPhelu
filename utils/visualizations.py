@@ -252,7 +252,7 @@ def plot_regression_predictions(historical_df, predicted_df, district_encoded, d
     # Filter for specific district
     historical = historical_df[
         (historical_df["district_encoded"] == district_encoded) &
-        (historical_df["Date"] >= pd.to_datetime("2010-01-01"))
+        (historical_df["Date"] >= pd.to_datetime("2010-01-01").dt.floor('ms'))
     ].copy()
     # historical = historical_df[historical_df["district_encoded"] == district_encoded].copy()
     predicted = predicted_df.copy()

@@ -23,8 +23,8 @@ def load_cached_climate_data(climate_file):
 def preprocess_dates(df):
     """Ensure proper datetime serialization"""
     if 'Date' in df.columns:
-        # Convert to datetime down to mili-second precision and convert to string for Arrow compatibility
-        df['Date'] = pd.to_datetime(df['Date']).dt.strftime('%Y-%m-%d')
+        # Convert to datetime down to mili-second precision for Arrow compatibility
+        df['Date'] = pd.to_datetime(df['Date']).dt.floor('ms')
         # # Convert to string for Arrow compatibility
         # df['Date'] = df['Date'].dt.strftime('%Y-%m-%d')
     return df
