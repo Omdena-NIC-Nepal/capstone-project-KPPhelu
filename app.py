@@ -1,13 +1,4 @@
 import streamlit as st
-# from pathlib import Path
-# import sys
-# import os
-
-# utils_dir = os.path.join(Path(__file__).parent, "utils")
-# sys.path.append(utils_dir)
-# from data_utils import DataLoader
-# from preprocessing import DataPreprocessor
-# from label_generation import LabelGenerator
 from utils.data_utils import DataLoader
 from utils.preprocessing import DataPreprocessor
 from utils.label_generation import LabelGenerator
