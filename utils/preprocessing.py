@@ -50,7 +50,7 @@ class DataPreprocessor:
         """
         if date_column in self.df.columns:
             self.df[date_column] = pd.to_datetime(self.df[date_column], errors="coerce")
-            print(f"'{date_column}' column converted to datetime.")
+            print(f"'{date_column}' column converted to datetime format.")
 
     def drop_missing(self, key_columns = ['Date', 'District']):
         """

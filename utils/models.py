@@ -9,6 +9,7 @@ import pickle
 import os
 import warnings
 from sklearn.exceptions import DataConversionWarning
+import streamlit as st
 
 # Suppress specific warnings
 warnings.filterwarnings('ignore', category=DataConversionWarning)
@@ -133,7 +134,7 @@ def save_model(model, scaler, model_name):
         with open(f'models/{model_name}_scaler.pkl', 'wb') as file:
             pickle.dump(scaler, file)
     
-
+@st.cache_resource
 def load_model(model_name):
     """
     Load the trained model and scaler from disk.

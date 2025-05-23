@@ -1,23 +1,28 @@
 import streamlit as st
-from pathlib import Path
-import sys
-import os
+# from pathlib import Path
+# import sys
+# import os
 
-utils_dir = os.path.join(Path(__file__).parent, "utils")
-sys.path.append(utils_dir)
-from data_utils import DataLoader
-from preprocessing import DataPreprocessor
-from label_generation import LabelGenerator
+# utils_dir = os.path.join(Path(__file__).parent, "utils")
+# sys.path.append(utils_dir)
+# from data_utils import DataLoader
+# from preprocessing import DataPreprocessor
+# from label_generation import LabelGenerator
+from utils.data_utils import DataLoader
+from utils.preprocessing import DataPreprocessor
+from utils.label_generation import LabelGenerator
 
-pages_dir = os.path.join(Path(__file__).parent, "pages_streamlit")
-sys.path.append(pages_dir)
+# pages_dir = os.path.join(Path(__file__).parent, "pages_streamlit")
+# sys.path.append(pages_dir)
+# from pages_streamlit import feature_engineering_pg, home_pg, data_exploration_pg, eda_with_climate_event_pg
+# from pages_streamlit import model_training_pg, prediction_pg, about_pg
 from pages_streamlit import feature_engineering_pg, home_pg, data_exploration_pg, eda_with_climate_event_pg
 from pages_streamlit import model_training_pg, prediction_pg, about_pg
 
 # Set the page configuration
 st.set_page_config(
     page_title = "Extreme Weather Event Detection and Prediction",
-    page_icon=' ',
+    page_icon='🌪️',
     layout = 'wide',
     initial_sidebar_state="expanded",  # Sidebar shows by default
 )
@@ -67,5 +72,14 @@ elif page == "About":
 
 
 # Footer
-st.markdown("---")
-st.markdown("--- Krishna Prasad Phelu ---")
+st.markdown("---", unsafe_allow_html=True)
+st.markdown(
+    """
+    <div style='text-align: center; padding: 10px; font-size: 14px; color: gray;'>
+        🚀 Developed by <strong>Krishna Prasad Phelu</strong><br>
+        <a href="https://www.linkedin.com/in/krishna-prasad-phelu-16b96455/" target="_blank" style="color: #1f77b4;">LinkedIn</a> |
+        <a href="mailto:krishna.phelu@gmail.com" style="color: #1f77b4;">Email</a>
+    </div>
+    """,
+    unsafe_allow_html=True
+)

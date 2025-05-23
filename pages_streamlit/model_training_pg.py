@@ -1,14 +1,5 @@
 import streamlit as st
-# from pathlib import Path
 import pandas as pd
-# import os
-# import sys
-
-# utils_dir = os.path.join(Path(__file__).parent, "utils")
-# sys.path.append(utils_dir)
-# from data_utils import PrepareData
-# from models import split_data, train_model, evaluate_model, save_model
-# from visualizations import plot_confusion_matrix, plot_regression_results
 
 from utils.data_utils import PrepareData
 from utils.models import split_data, train_model, evaluate_model, save_model

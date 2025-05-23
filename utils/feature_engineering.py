@@ -6,6 +6,9 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 
 class FeatureEngineering:
+    """
+    This class perform the Feature Engineering
+    """
     def __init__(self, df, label_encoder=None):
         self.df = df.copy() # Prevent modifying original DataFrame
         self.label_encoder = label_encoder if label_encoder else LabelEncoder()
@@ -41,10 +44,10 @@ class FeatureEngineering:
         if 'Date' not in self.df:
             raise ValueError("DataFrame must contain 'Date' column")
         # Extract temporal features
-        self.df['year'] = self.df['Date'].dt.year
-        self.df['month'] = self.df['Date'].dt.month
+        self.df['year'] = self.df['Date'].dt.year # get year from Date
+        self.df['month'] = self.df['Date'].dt.month # get month from Date
         self.df['dayofweek'] = self.df['Date'].dt.dayofweek  # Monday=0, Sunday=6
-        self.df['dayofyear'] = self.df['Date'].dt.dayofyear
+        self.df['dayofyear'] = self.df['Date'].dt.dayofyear # get day of year from Date
         self.df['season'] = self.df['month'] % 12 // 3 + 1 # 1: Winter, 2: Spring, etc.
         return ('year', 'month', 'dayofweek', 'dayofyear', 'season')
 

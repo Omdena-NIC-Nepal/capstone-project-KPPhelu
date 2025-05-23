@@ -11,6 +11,9 @@ Event types are determined based on configurable thresholds and include:
 import pandas as pd
 
 class LabelGenerator:
+    """
+    This calss generates label for climate events using threshold values
+    """
     def __init__(self, df, thresholds=None):
         """
         Initialize class

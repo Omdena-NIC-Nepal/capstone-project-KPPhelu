@@ -28,7 +28,7 @@ def show():
     # Input for District and Date
     col1, col2 = st.columns(2)
     with col1:
-        target_date = st.date_input("Select Target Date", value=pd.to_datetime("2021-01-01"))
+        target_date = st.date_input("Select Target Date", value=pd.to_datetime("2021-01-01").dt.strftime('%Y-%m-%d'))
     with col2: 
         districts = st.session_state.fe_obj.district_classes
         selected_district = st.selectbox("Select District", districts)
@@ -56,7 +56,7 @@ def show():
         }
         predicted_df = predict_until_date(reg_model, reg_scaler, multi_class_model, binary_class_model,
                                           existing_latest_climate_df, 
-                                          pd.to_datetime(target_date), district_encoded,
+                                          pd.to_datetime(target_date).dt.strftime('%Y-%m-%d'), district_encoded,
                                           rolling_window, lag_days,
                                           event_type_mapping)
         st.write("Predicted climate data along with all feature engineered columns:")

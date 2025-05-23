@@ -6,11 +6,13 @@ import geopandas as gpd
 from pathlib import Path
 import streamlit as st
 
+## Load data using @st.cache_data
 @st.cache_data(show_spinner=False, ttl=3600)
 def load_cached_shape_file(shape_file):
     st.info("Loading shapefile from cache...")
     return gpd.read_file(shape_file)
 
+## Load data using @st.cache_data
 @st.cache_data(show_spinner="Loading climate data...", ttl=3600)
 def load_cached_climate_data(climate_file):
     st.info("Loading climate CSV from cache...")
@@ -21,10 +23,10 @@ def load_cached_climate_data(climate_file):
 def preprocess_dates(df):
     """Ensure proper datetime serialization"""
     if 'Date' in df.columns:
-        # Convert to datetime and normalize to avoid nanoseconds
-        df['Date'] = pd.to_datetime(df['Date']).dt.normalize()
-        # Convert to string for Arrow compatibility
-        df['Date'] = df['Date'].dt.strftime('%Y-%m-%d')
+        # Convert to datetime down to mili-second precision and convert to string for Arrow compatibility
+        df['Date'] = pd.to_datetime(df['Date']).dt.strftime('%Y-%m-%d')
+        # # Convert to string for Arrow compatibility
+        # df['Date'] = df['Date'].dt.strftime('%Y-%m-%d')
     return df
 
 class DataLoader:
@@ -95,8 +97,10 @@ class PrepareData:
         """
         Prepare data from given target columns and exclusion columns
         """
+        # get feature columns
         feature_cols = [col for col in self.all_columns if col not in target_cols + exclude_cols]
         
+        # get X and y part of dataset
         X = self.df[feature_cols]
         y = self.df[target_cols]
 

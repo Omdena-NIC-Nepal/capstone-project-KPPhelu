@@ -1,10 +1,5 @@
 import streamlit as st
 
-# utils_dir = os.path.join(Path(__file__).parent, "utils")
-# sys.path.append(utils_dir)
-# from feature_engineering import FeatureEngineering
-# from visualizations import plot_histogram
-
 from utils.feature_engineering import FeatureEngineering
 from utils.visualizations import plot_histogram
 
